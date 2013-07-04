@@ -1,3 +1,4 @@
 node_modules/*
 ls -l
 components/*
+tsd/DefinitelyTyped/**/*.key
