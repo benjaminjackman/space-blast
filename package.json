@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "grunt-typescript": "0.2.0",
+    "grunt": "0.4.1",
+    "grunt-contrib-watch": "0.4.4",
+    "grunt-bower-task": "~0.2.3"
+  }
+}
