@@ -66,7 +66,7 @@ module.exports = function (grunt) {
       //Copy lib files from the lib folder to the site folder
       lib: {
         files: [
-          {cwd:'lib/', src: '**/*.js', dest: 'target/site/js/lib/'}
+          {cwd: 'lib/', src: '**/*.js', dest: 'target/site/js/lib/'}
         ]
       },
       img: {
@@ -132,12 +132,23 @@ module.exports = function (grunt) {
     });
   });
 
-  grunt.registerTask('allts', 'Creates a file that has all ts dependens ', function () {
+  grunt.registerTask('alldts', 'Creates a file that has all ts dependens ', function () {
+    var alldts = 'src/site/ts/_all.d.ts'
+    var content = grunt.file.expand('tsd/**/*.d.ts').map(function (f) {
+      var path = "../../../" + f;
+      return '/// <reference path="' + path + '" />';
+    }).join("\n");
+    try {
+      grunt.file.delete(alldts);
+    } catch(e) {
 
+    }
+    grunt.file.write(alldts, content);
   });
 
+
   //requires npm --instal
-  grunt.registerTask('tsd', ['clean:tsd', 'shell:tsd']);
+  grunt.registerTask('tsd', ['clean:tsd', 'shell:tsd', 'alldts']);
   grunt.registerTask('lib', ['clean:lib', 'bower:install', 'copyto:lib', 'tsd']);
   grunt.registerTask('compile', ['clean:compiled', 'typescript', 'templates']);
   grunt.registerTask('default', ['compile']);
