@@ -4,12 +4,12 @@
 //Loading Scene
 Crafty.scene("Loading",function(){
     var toLoad = [];
-    toLoad.push(game_path + "assets/img/loading.jpg", game_path + "assets/img/bg.png");
+    toLoad.push(game_path + "resources/images/loading.jpg", game_path + "resources/images/bg.png");
     for(var i in Crafty.assets){
         toLoad.push(i);
     }
     //Setup background image
-    Crafty.background("url("+game_path+"assets/img/loading.jpg) black");
+    Crafty.background("url("+game_path+"resources/images/loading.jpg) black");
     
     //Select DOM elements
     var bar = $('#load');
@@ -20,17 +20,13 @@ Crafty.scene("Loading",function(){
     //Setup progressbar
     text.text("Loading ...");
 
-    bar.progressbar({
-        value:0
-   
-    });
     //Bind click event on button
-    button.live('click',function(){
+    button.on('click',function(){
         //Start scene level 1
         Crafty.scene("Level1");  
     });
   
-    $('.skip').live('click',function(){
+    $('.skip').on('click',function(){
         bar.fadeOut(1000,function(){
             button.show();
         });
@@ -50,10 +46,7 @@ Crafty.scene("Loading",function(){
           
             //update progress
             text.text("Loading "+src.substr(src.lastIndexOf('/') + 1).toLowerCase()+" Loaded: "+~~e.percent+"%");
-            bar.progressbar({
-                value:~~e.percent
-            });
-       
+
       
         },
         function(e) {
@@ -75,8 +68,8 @@ Crafty.scene("Level1",function(){
     //Display interface
     $('#interface').show();
     //Setup background of level
-    Crafty.background("url(" + game_path + "/assets/img/bg.png)");
-    
+    Crafty.background("url(" + game_path + "resources/images/bg.png)");
+
     $('.level').text('Level: 1');
 
     //Get the Interface elements
@@ -144,20 +137,20 @@ Crafty.scene("Level1",function(){
         infos.lives.text("Lives: "+player.lives);
         
         //Update progressbars
-        bars.heat.progressbar({
-            value:player.heat.percent
-        });
-        bars.hp.progressbar({
-            value:player.hp.percent
-        });
-        bars.shield.progressbar({
-            value:player.shield.percent
-        });
+//        bars.heat.progressbar({
+//            value:player.heat.percent
+//        });
+//        bars.hp.progressbar({
+//            value:player.hp.percent
+//        });
+//        bars.shield.progressbar({
+//            value:player.shield.percent
+//        });
 
     });
     //Bind global Event Show Text
     Crafty.bind("ShowText",function(text){
-        infos.alert.text(text).show().effect('pulsate',500)
+        infos.alert.text(text).show()//.effect('pulsate',500)
     });
     Crafty.bind("HideText",function(){
         infos.alert.text("").hide(); 

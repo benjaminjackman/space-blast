@@ -34,10 +34,10 @@ Crafty.c("Player",{
         var keyDown = false; //Player didnt pressed a key
         this.requires("2D,Canvas,"+this.ship+",Multiway,Keyboard,Collision,Flicker") /*Add needed Components*/
         .multiway(this.movementSpeed, { /*Enable Movement Control*/
-            UP_ARROW: -90, 
-            DOWN_ARROW: 90, 
-            RIGHT_ARROW: 0, 
-            LEFT_ARROW: 180
+            W: -90,
+            S: 90,
+            D: 0,
+            A: 180
         })
         .bind('Moved', function(from) { /*Bind a function which is triggered if player is moved*/
             /*Dont allow to move the player out of Screen*/
@@ -100,11 +100,11 @@ Crafty.c("Player",{
             if(this.bounce == false) {
                 this.bounce = true;
                 var t = this;
-                stage.effect('highlight',{
-                    color:'#990000'
-                },100,function(){
-                    t.bounce = false;
-                });
+//                stage.effect('highlight',{
+//                    color:'#990000'
+//                },100,function(){
+//                    t.bounce = false;
+//                });
             }
             Crafty.e("Damage").attr({
                 x:this.x,

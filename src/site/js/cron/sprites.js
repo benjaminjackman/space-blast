@@ -1,5 +1,5 @@
 
-Crafty.sprite(game_path + "assets/img/ships.png",{
+Crafty.sprite(game_path + "resources/images/ships.png",{
     //Gold
     ship1:[0,0,44,47],
     ship2:[47,0,40,47],
@@ -20,28 +20,28 @@ Crafty.sprite(game_path + "assets/img/ships.png",{
     ship16:[340,48,67,47]
 });
 
-Crafty.sprite(5,13,game_path + "assets/img/weapon1_small.png",{
+Crafty.sprite(5,13,game_path + "resources/images/weapon1_small.png",{
     laser1:[0,0] 
 });
-Crafty.sprite(27,36,game_path + "assets/img/weapon2.png",{
+Crafty.sprite(27,36,game_path + "resources/images/weapon2.png",{
     laser2:[0,0] 
 });
-Crafty.sprite(29,game_path + "assets/img/dmg.png",{
+Crafty.sprite(29,game_path + "resources/images/dmg.png",{
     dmg:[0,0]
 });
-Crafty.sprite(64,game_path + "assets/img/asteroid64.png",{
+Crafty.sprite(64,game_path + "resources/images/asteroid64.png",{
     asteroid64:[0,0]
 });
-Crafty.sprite(32,game_path + "assets/img/asteroid32.png",{
+Crafty.sprite(32,game_path + "resources/images/asteroid32.png",{
     asteroid32:[0,0]
 });
-Crafty.sprite(128,game_path + "assets/img/explosion.png",{
+Crafty.sprite(128,game_path + "resources/images/explosion.png",{
     explosion1:[0,0],
     explosion2:[0,1],
     explosion3:[0,2]
 });
 
-Crafty.sprite(34,30,game_path + "assets/img/powerups.png",{
+Crafty.sprite(34,30,game_path + "resources/images/powerups.png",{
     heal:[0,0],
     shield:[0,1],
     overheat:[0,2],

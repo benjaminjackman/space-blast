@@ -17,7 +17,7 @@ Crafty.c("RandomExplosion",{
 });
 Crafty.c("Damage",{
     init:function(){
-        this.addComponent("2D","Canvas","dmg")
+        this.addComponent("2D","Canvas","dmg", "Delay")
         .delay(function(){this.destroy()},100);
         
     }

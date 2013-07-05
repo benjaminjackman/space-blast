@@ -13,3 +13,27 @@ Build instructions:
 
 npm install -g grunt
 npm install -g tsd
+
+
+Ship Systems:
+
+Sensors
+Computer
+
+Reactor
+Engines
+Thrusters
+
+Weapons
+Beam
+Kinetic
+Thermal
+Chemical
+Biologic
+Nano
+
+Shields
+Armor
+Hull
+Structure
+
