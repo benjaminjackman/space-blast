@@ -24,6 +24,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-copy-to');
   grunt.loadNpmTasks('grunt-shell');
+  grunt.loadNpmTasks('grunt-express');
 
   //Helper functions
   function log() {
@@ -53,6 +54,15 @@ module.exports = function (grunt) {
   grunt.initConfig({
     bower: {
       install: {
+      }
+    },
+
+    express: {
+      server: {
+        options: {
+          port: 3000,
+          bases: "target/site"
+        }
       }
     },
 
@@ -103,7 +113,7 @@ module.exports = function (grunt) {
       //Build on ts file changes
       tsSite: {
         files: tsSrc,
-        tasks: ['typescript:site']
+        tasks: ['typescript']
       },
       //Build on changes to html template files
       templates: {
@@ -140,7 +150,7 @@ module.exports = function (grunt) {
     }).join("\n");
     try {
       grunt.file.delete(alldts);
-    } catch(e) {
+    } catch (e) {
 
     }
     grunt.file.write(alldts, content);
@@ -153,7 +163,8 @@ module.exports = function (grunt) {
   grunt.registerTask('compile', ['clean:compiled', 'typescript', 'templates']);
   grunt.registerTask('default', ['compile']);
   //loops and recompiles / tests on every source file change.
-  grunt.registerTask('loop', ['typescript', 'watch']);
+  grunt.registerTask('loop', ['express', 'compile', 'watch']);
+
 
 };
 
