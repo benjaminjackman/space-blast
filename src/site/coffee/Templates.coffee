@@ -13,8 +13,11 @@ T.tableOfContents =
   </div>
   """
 
-T.crafy =
+T.game =
   """
-  <div id="cr-stage">
+  <div id="game">
+    Game:
+    <div id="cr-stage">
+    </div>
   </div>
   """
