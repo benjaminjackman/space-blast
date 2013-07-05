@@ -1,2 +1,3 @@
 node_modules/*
 components/*
+tsd/DefinitelyTyped/**/*.key

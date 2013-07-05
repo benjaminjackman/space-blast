@@ -17,6 +17,15 @@ var _ = require('underscore');
 
 module.exports = function (grunt) {
 
+  //External tasks
+  grunt.loadNpmTasks('grunt-typescript');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-bower-task');
+  grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-copy-to');
+  grunt.loadNpmTasks('grunt-shell');
+
+  //Helper functions
   function log() {
     grunt.log.writeln.apply(
       grunt.log,
@@ -25,14 +34,6 @@ module.exports = function (grunt) {
       })
     );
   }
-
-
-  grunt.loadNpmTasks('grunt-typescript');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-bower-task');
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-shell');
 
   //reused locations
   var tsSrc = ['src/site/ts/**/*.ts'];
@@ -57,22 +58,23 @@ module.exports = function (grunt) {
 
     clean: {
       compiled: ['target/site'],
-      tsd: tsdLibs.map(function(t) {return "src/site/ts/"+t})
+      tsd: ['tsd'],
+      lib: ['lib']
     },
 
-    copy: {
+    copyto: {
       //Copy lib files from the lib folder to the site folder
       lib: {
         files: [
-          {src: 'lib/**/*.js', dest: 'target/site/js/'}
+          {cwd:'lib/', src: '**/*.js', dest: 'target/site/js/lib/'}
         ]
       },
-      //copy .d.ts files so that typescript can find them
-      tsd: {
+      img: {
         files: [
-          {src: '**/*.d.ts', dest: 'src/ts', cwd:'tsd/DefinitelyTypes/'}
+          {cwd: 'src/site/images/', src: '**/*', dest: 'target/site/images/'}
         ]
       }
+
     },
 
     //Compile typescript files
@@ -92,7 +94,7 @@ module.exports = function (grunt) {
       //Use the tsd program to download all listed typescript ts.d files
       tsd: {
         command: tsdLibs.map(function (t) {return "tsd install* " + t}).join("&&"),
-        options: {failOnError: true}
+        options: {failOnError: true, stdout: true}
       }
     },
 
@@ -130,11 +132,15 @@ module.exports = function (grunt) {
     });
   });
 
+  grunt.registerTask('allts', 'Creates a file that has all ts dependens ', function () {
+
+  });
+
   //requires npm --instal
-  grunt.registerTask('tsd', ['clean:tsd', 'shell:tsd', 'copy:tsd']);
-  grunt.registerTask('lib', ['tsd'])
-  grunt.registerTask('compile', ['clean', 'copy', 'typescript', 'templates']);
-  grunt.registerTask('default', ['typescript']);
+  grunt.registerTask('tsd', ['clean:tsd', 'shell:tsd']);
+  grunt.registerTask('lib', ['clean:lib', 'bower:install', 'copyto:lib', 'tsd']);
+  grunt.registerTask('compile', ['clean:compiled', 'typescript', 'templates']);
+  grunt.registerTask('default', ['compile']);
   //loops and recompiles / tests on every source file change.
   grunt.registerTask('loop', ['typescript', 'watch']);
 
