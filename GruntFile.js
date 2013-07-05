@@ -41,7 +41,7 @@ module.exports = function (grunt) {
 
   //reused locations
   var tsSrc = ['src/site/ts/**/*.ts'];
-  var tsOut = 'target/site/js/ts';
+  var tsOut = 'target/site/scripts/ts';
 
   var htmlSrc = 'src/site/html/**/*.html';
 
@@ -82,7 +82,7 @@ module.exports = function (grunt) {
           'lib/angular/angular.js',
           'lib/*/*.js'
         ],
-        dest: 'target/site/js/lib/Lib.js'
+        dest: 'target/site/scripts/lib/Lib.js'
       },
       libcss: {
         src: ['lib/*/*.css'],
@@ -91,20 +91,18 @@ module.exports = function (grunt) {
     },
 
     copyto: {
-      resources: {files: [
-        {cwd: 'src/site/resources/', src: '**/*', dest: 'target/site/resources/'}
-      ]},
-      js: {files: [
-        {cwd: 'src/site/js/', src: '**/*.js', dest: 'target/site/js/'}
-      ]},
+      resources: {
+        files: [
+          {cwd: 'src/site/resources/', src: '**/*', dest: 'target/site/resources/'}
+        ]},
+      js: {
+        files: [
+          {cwd: 'src/site/js/', src: '**/*.js', dest: 'target/site/scripts/js/'}
+        ]},
       bootstrapImg: {
         files: [
-          {
-            cwd: "lib/bootstrap",
-            src: "*.png",
-            dest: "target/site/css/img/"}
-        ]
-      }
+          {cwd: "lib/bootstrap", src: "*.png", dest: "target/site/css/img/"}
+        ]}
     },
 
     //Compile typescript files
@@ -125,7 +123,7 @@ module.exports = function (grunt) {
         expand: true,
         flatten: true,
         src: 'src/site/coffee/**/*.coffee',
-        dest: 'target/site/js/coffee',
+        dest: 'target/site/scripts/coffee',
         ext: '.js'
       }
     },
@@ -158,12 +156,19 @@ module.exports = function (grunt) {
     //Get the name of all the html files.
 //    var templs = grunt.file.expandMapping(htmlSrc, htmlOut, {cwd:'src/site/html'})
     var templs = grunt.file.expand({cwd: 'src/site/html'}, '**/*.html');
-    var jsTmpl = grunt.file.expand({cwd: "target/site"}, ['js/lib/**/*.js', 'js/ts/**/*.js']).map(function (f) {
-      return '<script src="' + f + '"></script>';
-    }).join("\n");
-    var cssTmpl = grunt.file.expand({cwd: "target/site"}, ['css/lib/**/*.css', 'css/less/**/*.css']).map(function (f) {
-      return '<link rel="stylesheet" href="' + f + '"/>';
-    }).join("\n");
+    var jsTmpl = grunt.file.expand(
+      {cwd: "target/site"},
+      ['scripts/lib/**/*.js', 'scripts/js/**/*.js', 'scripts/coffee/**/*.js', 'scripts/ts/**/*.js']).map(
+      function (f) {
+        return '<script src="' + f + '"></script>';
+      }
+    ).join("\n");
+
+    var cssTmpl = grunt.file.expand({cwd: "target/site"}, ['css/lib/**/*.css', 'css/less/**/*.css']).map(
+      function (f) {
+        return '<link rel="stylesheet" href="' + f + '"/>';
+      }
+    ).join("\n");
 
     templs.forEach(function (f) {
       var cfg = {
