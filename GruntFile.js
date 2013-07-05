@@ -113,7 +113,7 @@ module.exports = function (grunt) {
     less: {
       site: {
         src: 'src/site/less/**/*.less',
-        dest: 'target/styles/less'
+        dest: 'target/site/styles/less'
       }
     },
 
