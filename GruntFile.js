@@ -24,6 +24,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-copy-to');
   grunt.loadNpmTasks('grunt-shell');
+  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-express');
 
   //Helper functions
@@ -72,19 +73,35 @@ module.exports = function (grunt) {
       lib: ['lib']
     },
 
-    copyto: {
-      //Copy lib files from the lib folder to the site folder
-      lib: {
-        files: [
-          {cwd: 'lib/', src: '**/*.js', dest: 'target/site/js/lib/'}
-        ]
+    concat: {
+      libjs: {
+        src: [
+          'lib/jquery/jquery.js',
+          'lib/angular/angular.js',
+          'lib/*/*.js'
+        ],
+        dest: 'target/site/js/lib/Lib.js'
       },
-      img: {
+      libcss: {
+        src: ['lib/*/*.css'],
+        dest: 'target/site/css/lib/Lib.css'
+      }
+    },
+
+    copyto: {
+      resources: {files: [
+        {cwd: 'src/site/resources/', src: '**/*', dest: 'target/site/resources/'}
+      ]},
+      bootstrapImg: {
         files: [
-          {cwd: 'src/site/images/', src: '**/*', dest: 'target/site/images/'}
+          {
+            expand: true,
+            flatten: true,
+            cwd: "lib/bootstrap",
+            src: "*.png",
+            dest: "target/site/css/img/"}
         ]
       }
-
     },
 
     //Compile typescript files
@@ -128,13 +145,17 @@ module.exports = function (grunt) {
     //Get the name of all the html files.
 //    var templs = grunt.file.expandMapping(htmlSrc, htmlOut, {cwd:'src/site/html'})
     var templs = grunt.file.expand({cwd: 'src/site/html'}, '**/*.html');
-    var jsTmpl = grunt.file.expand({cwd: "target/site"}, 'js/**/*.js').map(function (f) {
+    var jsTmpl = grunt.file.expand({cwd: "target/site"}, ['js/lib/**/*.js', 'js/ts/**/*.js']).map(function (f) {
       return '<script src="' + f + '"></script>';
+    }).join("\n");
+    var cssTmpl = grunt.file.expand({cwd: "target/site"}, ['css/lib/**/*.css', 'css/less/**/*.css']).map(function (f) {
+      return '<link rel="stylesheet" href="' + f + '"/>';
     }).join("\n");
 
     templs.forEach(function (f) {
       var cfg = {
-        js: jsTmpl
+        js: jsTmpl,
+        css: cssTmpl
       };
       var src = 'src/site/html/' + f;
       var dest = 'target/site/' + f;
@@ -143,7 +164,7 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('alldts', 'Creates a file that has all ts dependens ', function () {
-    var alldts = 'src/site/ts/_all.d.ts'
+    var alldts = 'src/site/ts/_all.d.ts';
     var content = grunt.file.expand('tsd/**/*.d.ts').map(function (f) {
       var path = "../../../" + f;
       return '/// <reference path="' + path + '" />';
@@ -159,11 +180,11 @@ module.exports = function (grunt) {
 
   //requires npm --instal
   grunt.registerTask('tsd', ['clean:tsd', 'shell:tsd', 'alldts']);
-  grunt.registerTask('lib', ['clean:lib', 'bower:install', 'copyto:lib', 'tsd']);
-  grunt.registerTask('compile', ['clean:compiled', 'typescript', 'templates']);
+  grunt.registerTask('lib', ['clean:lib', 'bower:install', 'concat', 'tsd']);
+  grunt.registerTask('compile', ['clean:compiled', 'concat', 'typescript', 'templates', 'copyto:resources']);
   grunt.registerTask('default', ['compile']);
   //loops and recompiles / tests on every source file change.
-  grunt.registerTask('loop', ['express', 'compile', 'watch']);
+  grunt.registerTask('loop', ['compile', 'express', 'watch']);
 
 
 };
