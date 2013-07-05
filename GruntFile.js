@@ -27,6 +27,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-copy-to');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-express');
 
   //Helper functions
@@ -86,7 +87,7 @@ module.exports = function (grunt) {
       },
       libcss: {
         src: ['lib/*/*.css'],
-        dest: 'target/site/css/lib/Lib.css'
+        dest: 'target/site/styles/lib/Lib.css'
       }
     },
 
@@ -99,10 +100,21 @@ module.exports = function (grunt) {
         files: [
           {cwd: 'src/site/js/', src: '**/*.js', dest: 'target/site/scripts/js/'}
         ]},
+      css: {
+        files: [
+          {cwd: 'src/site/css/', src: '**/*.css', dest: 'target/site/styles/css/'}
+        ]},
       bootstrapImg: {
         files: [
-          {cwd: "lib/bootstrap", src: "*.png", dest: "target/site/css/img/"}
+          {cwd: "lib/bootstrap", src: "*.png", dest: "target/site/styles/lib/img/"}
         ]}
+    },
+
+    less: {
+      site: {
+        src: 'src/site/less/**/*.less',
+        dest: 'target/styles/less'
+      }
     },
 
     //Compile typescript files
@@ -153,6 +165,16 @@ module.exports = function (grunt) {
         files: 'src/site/js/**/*.js',
         tasks: ['copyto:js']
       },
+      //Build on js file changes
+      css: {
+        files: 'src/site/css/**/*.css',
+        tasks: ['copyto:css']
+      },
+      //Build on js file changes
+      less: {
+        files: 'src/site/less/**/*.less',
+        tasks: ['less']
+      },
       //Build on changes to html template files
       templates: {
         files: [htmlSrc],
@@ -166,7 +188,7 @@ module.exports = function (grunt) {
     //Get the name of all the html files.
 //    var templs = grunt.file.expandMapping(htmlSrc, htmlOut, {cwd:'src/site/html'})
     var templs = grunt.file.expand({cwd: 'src/site/html'}, '**/*.html');
-    var jsTmpl = grunt.file.expand(
+    var scriptsTmpl = grunt.file.expand(
       {cwd: "target/site"},
       ['scripts/lib/**/*.js', 'scripts/js/**/*.js', 'scripts/coffee/**/*.js', 'scripts/ts/**/*.js']).map(
       function (f) {
@@ -174,7 +196,7 @@ module.exports = function (grunt) {
       }
     ).join("\n");
 
-    var cssTmpl = grunt.file.expand({cwd: "target/site"}, ['css/lib/**/*.css', 'css/less/**/*.css']).map(
+    var stylesTmpl = grunt.file.expand({cwd: "target/site"}, ['styles/lib/**/*.css', 'styles/css/**/*.css', 'styles/less/**/*.css']).map(
       function (f) {
         return '<link rel="stylesheet" href="' + f + '"/>';
       }
@@ -182,8 +204,8 @@ module.exports = function (grunt) {
 
     templs.forEach(function (f) {
       var cfg = {
-        js: jsTmpl,
-        css: cssTmpl
+        js: scriptsTmpl,
+        css: stylesTmpl
       };
       var src = 'src/site/html/' + f;
       var dest = 'target/site/' + f;
@@ -213,9 +235,9 @@ module.exports = function (grunt) {
   //Downloads all depenedencies
   grunt.registerTask('download', ['bower-update', 'tsd-update']);
   //Moves all files into the site folder
-  grunt.registerTask('move-to-site', ['copyto:bootstrapImg', 'concat', 'copyto:resources', 'copyto:js']);
+  grunt.registerTask('move-to-site', ['copyto:bootstrapImg', 'concat', 'copyto:resources', 'copyto:js', 'copyto:css']);
   //Compiles needed files to the site folder
-  grunt.registerTask('compile', ['clean:site', 'move-to-site', 'coffee', 'typescript', 'templates']);
+  grunt.registerTask('compile', ['clean:site', 'move-to-site', 'coffee', 'typescript', 'templates', 'less']);
   //loops and recompiles / tests on every source file change.
   grunt.registerTask('loop', ['compile', 'express', 'watch']);
 
