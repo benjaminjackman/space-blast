@@ -95,8 +95,6 @@ module.exports = function (grunt) {
       bootstrapImg: {
         files: [
           {
-            expand: true,
-            flatten: true,
             cwd: "lib/bootstrap",
             src: "*.png",
             dest: "target/site/css/img/"}
@@ -180,7 +178,7 @@ module.exports = function (grunt) {
 
   //requires npm --instal
   grunt.registerTask('tsd', ['clean:tsd', 'shell:tsd', 'alldts']);
-  grunt.registerTask('lib', ['clean:lib', 'bower:install', 'concat', 'tsd']);
+  grunt.registerTask('lib', ['clean:lib', 'bower:install', 'copyto:bootstrapImg', 'concat', 'tsd']);
   grunt.registerTask('compile', ['clean:compiled', 'concat', 'typescript', 'templates', 'copyto:resources']);
   grunt.registerTask('default', ['compile']);
   //loops and recompiles / tests on every source file change.
