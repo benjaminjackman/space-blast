@@ -1,11 +1,13 @@
+var blastMain = angular.module('Blast.Main', []);
+
 var Blast;
 (function (Blast) {
-    var Hello = (function () {
-        function Hello() {
+    var Main = (function () {
+        function Main() {
             console.log("Hello World");
         }
-        return Hello;
+        return Main;
     })();
-    Blast.Hello = Hello;
+    Blast.Main = Main;
 })(Blast || (Blast = {}));
 //@ sourceMappingURL=Main.js.map

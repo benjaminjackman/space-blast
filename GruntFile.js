@@ -68,9 +68,9 @@ module.exports = function (grunt) {
     },
 
     clean: {
-      compiled: ['target/site'],
+      site: ['target/site'],
       tsd: ['tsd'],
-      lib: ['lib']
+      bower: ['lib']
     },
 
     concat: {
@@ -176,10 +176,16 @@ module.exports = function (grunt) {
   });
 
 
-  //requires npm --instal
-  grunt.registerTask('tsd', ['clean:tsd', 'shell:tsd', 'alldts']);
-  grunt.registerTask('lib', ['clean:lib', 'bower:install', 'copyto:bootstrapImg', 'concat', 'tsd']);
-  grunt.registerTask('compile', ['clean:compiled', 'concat', 'typescript', 'templates', 'copyto:resources']);
+  //Clears then Downloads and generates files for tsd requires npm install -g tsd
+  grunt.registerTask('tsd-update', ['clean:tsd', 'shell:tsd', 'alldts']);
+  //Clears then Downloads bower managed dependencies
+  grunt.registerTask('bower-update', ['clean:bower', 'bower:install']);
+  //Downloads all depenedencies
+  grunt.registerTask('download', ['bower-update', 'tsd-update']);
+  //Moves all files into the site folder
+  grunt.registerTask('move-to-site', ['copyto:bootstrapImg', 'concat', 'copyto:resources']);
+  //Compiles needed files to the site folder
+  grunt.registerTask('compile', ['clean:site', 'move-to-site', 'typescript', 'templates']);
   grunt.registerTask('default', ['compile']);
   //loops and recompiles / tests on every source file change.
   grunt.registerTask('loop', ['compile', 'express', 'watch']);
