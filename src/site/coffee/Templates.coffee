@@ -3,4 +3,10 @@
 T = window.Templates = {}
 
 
-T.helloWorld = "Hello World"
+T.tableOfContents =
+  """
+    <div>
+      <a href="#game">Game</a>
+    </div>
+
+  """

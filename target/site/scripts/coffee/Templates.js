@@ -3,6 +3,6 @@
 
   T = window.Templates = {};
 
-  T.helloWorld = "Hello World";
+  T.tableOfContents = "<div>\n  <a href=\"#game\">Game</a>\n</div>\n";
 
 }).call(this);

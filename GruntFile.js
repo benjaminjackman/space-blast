@@ -72,7 +72,7 @@ module.exports = function (grunt) {
     clean: {
       site: ['target/site'],
       tsd: ['tsd'],
-      bower: ['lib']
+      bower: ['lib', 'components']
     },
 
     concat: {
@@ -139,9 +139,19 @@ module.exports = function (grunt) {
 
     watch: {
       //Build on ts file changes
-      tsSite: {
+      ts: {
         files: tsSrc,
         tasks: ['typescript']
+      },
+      //Build on coffee file changes
+      coffee: {
+        files: 'src/site/coffee/**/*.coffee',
+        tasks: ['coffee']
+      },
+      //Build on js file changes
+      js: {
+        files: 'src/site/js/**/*.js',
+        tasks: ['copyto:js']
       },
       //Build on changes to html template files
       templates: {
@@ -210,6 +220,8 @@ module.exports = function (grunt) {
   grunt.registerTask('loop', ['compile', 'express', 'watch']);
 
   grunt.registerTask('default', ['compile']);
+
+
 
 
 };
