@@ -1,16 +1,13 @@
 /// <reference path="_all.d.ts" />
 
 
-var blastMain = angular.module('Blast.Main', []);
-
-
-
 
 
 module Blast {
+  var blastMain = angular.module('Blast.Main', []);
   export class Main {
     constructor() {
-      console.log("Hello World")
+
     }
   }
 }

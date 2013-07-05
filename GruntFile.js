@@ -19,6 +19,8 @@ module.exports = function (grunt) {
 
   //External tasks
   grunt.loadNpmTasks('grunt-typescript');
+  grunt.loadNpmTasks('grunt-contrib-coffee');
+
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-bower-task');
   grunt.loadNpmTasks('grunt-contrib-clean');
@@ -92,6 +94,9 @@ module.exports = function (grunt) {
       resources: {files: [
         {cwd: 'src/site/resources/', src: '**/*', dest: 'target/site/resources/'}
       ]},
+      js: {files: [
+        {cwd: 'src/site/js/', src: '**/*.js', dest: 'target/site/js/'}
+      ]},
       bootstrapImg: {
         files: [
           {
@@ -112,6 +117,16 @@ module.exports = function (grunt) {
           target: 'es3',
           sourcemap: true
         }
+      }
+    },
+
+    coffee: {
+      site: {
+        expand: true,
+        flatten: true,
+        src: 'src/site/coffee/**/*.coffee',
+        dest: 'target/site/js/coffee',
+        ext: '.js'
       }
     },
 
@@ -183,12 +198,13 @@ module.exports = function (grunt) {
   //Downloads all depenedencies
   grunt.registerTask('download', ['bower-update', 'tsd-update']);
   //Moves all files into the site folder
-  grunt.registerTask('move-to-site', ['copyto:bootstrapImg', 'concat', 'copyto:resources']);
+  grunt.registerTask('move-to-site', ['copyto:bootstrapImg', 'concat', 'copyto:resources', 'copyto:js']);
   //Compiles needed files to the site folder
-  grunt.registerTask('compile', ['clean:site', 'move-to-site', 'typescript', 'templates']);
-  grunt.registerTask('default', ['compile']);
+  grunt.registerTask('compile', ['clean:site', 'move-to-site', 'coffee', 'typescript', 'templates']);
   //loops and recompiles / tests on every source file change.
   grunt.registerTask('loop', ['compile', 'express', 'watch']);
+
+  grunt.registerTask('default', ['compile']);
 
 
 };

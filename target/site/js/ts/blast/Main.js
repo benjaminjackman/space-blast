@@ -1,10 +1,8 @@
-var blastMain = angular.module('Blast.Main', []);
-
 var Blast;
 (function (Blast) {
+    var blastMain = angular.module('Blast.Main', []);
     var Main = (function () {
         function Main() {
-            console.log("Hello World");
         }
         return Main;
     })();
