@@ -4,8 +4,7 @@ if(window.opera){ console = {log:window.opera.postError} }
  * This is the Main JS File
  */
 
-$(function(){
-
+$(document).ready(function(){
     //Init Crafty
     Crafty.init(1280,1024);
     //Add Canvas Element
@@ -14,6 +13,6 @@ $(function(){
     Crafty.canvas._canvas.style.zIndex = '1';
     
     //play the loading scene
-    Crafty.scene("Loading");
+    Crafty.scene("Level1");
 });
 

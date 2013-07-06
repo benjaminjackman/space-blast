@@ -15,7 +15,7 @@ Crafty.scene("Loading",function(){
     var bar = $('#load');
     var button = $('.button');
     var text = bar.find('.text');
-    
+
     $('#interface').hide();
     //Setup progressbar
     text.text("Loading ...");
@@ -51,11 +51,10 @@ Crafty.scene("Loading",function(){
         },
         function(e) {
             //uh oh, error loading
-            var src = e.src ||"";
-            console.log("Error on loading: "+src.substr(src.lastIndexOf('/') + 1).toLowerCase());
+            console.log("Error on loading: "+ e.src);
         }
         );
-    Crafty.audio.play("intro",-1);
+//    Crafty.audio.play("intro",-1);
 },
 //Uninit Scene
 function(){
@@ -65,6 +64,8 @@ function(){
 });
 //Level 1 Scene
 Crafty.scene("Level1",function(){
+
+
     //Display interface
     $('#interface').show();
     //Setup background of level
@@ -97,14 +98,14 @@ Crafty.scene("Level1",function(){
     var spotEnemys = function(frame){   
         //Spot each 50th Fram one Asteroid
  
-        if(frame % 50 == 0 && Crafty("Asteroid").length < 2 && Crafty("SmallAsteroid").length < 8){
+        if(frame % 50 == 0 && Crafty("Asteroid").length < 20 && Crafty("SmallAsteroid").length < 80){
             Crafty.e("Asteroid"); 
         }
         
-        if(frame % 70 == 0 && Crafty("Kamikaze").length < 1){
+        if(frame % 70 == 0 && Crafty("Kamikaze").length < 10){
             Crafty.e("Kamikaze");   
         }
-        if(frame % 80 == 0  && Crafty("Level1").length < 1){
+        if(frame % 80 == 0  && Crafty("Level1").length < 10){
             Crafty.e("Rookie");
         }
         if(frame % 90 == 0  && Crafty("Level2").length < 1){
@@ -136,16 +137,10 @@ Crafty.scene("Level1",function(){
         infos.score.text("Score: "+player.score);
         infos.lives.text("Lives: "+player.lives);
         
-        //Update progressbars
-//        bars.heat.progressbar({
-//            value:player.heat.percent
-//        });
-//        bars.hp.progressbar({
-//            value:player.hp.percent
-//        });
-//        bars.shield.progressbar({
-//            value:player.shield.percent
-//        });
+//        Update progressbars
+        bars.heat.text(player.heat.percent);
+        bars.hp.text(player.hp.percent);
+        bars.shield.text(player.shield.percent);
 
     });
     //Bind global Event Show Text
@@ -163,6 +158,8 @@ Crafty.scene("Level1",function(){
             
     });
     //Play background music and repeat
-    Crafty.audio.play("space",-1);
+    //Crafty.audio.play("space",-1);
+
+    Crafty.pause();
   
 });
