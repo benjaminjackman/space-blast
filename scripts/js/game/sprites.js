@@ -1,5 +1,8 @@
-(function () {
-  function imgurl(name) { return "/resources/images/" + name; }
+ImageR = function () {
+  function imgurl(name) {
+    var r = "" + game_path + "resources/images/" + name;
+    return r;
+  }
 
   Crafty.sprite(imgurl("ships.png"), {
     //Gold
@@ -43,7 +46,7 @@
     explosion3: [0, 2]
   });
 
-  Crafty.sprite(34, 30, game_path + imgurl("powerups.png"), {
+  Crafty.sprite(34, 30, imgurl("powerups.png"), {
     heal: [0, 0],
     shield: [0, 1],
     overheat: [0, 2],
@@ -51,8 +54,10 @@
   });
 
   BlueBubbleFont = ' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRTYUVWXYZ~';
-  Crafty.sprite(16, game_path + imgurl("BlueBubbleFont.png"), {
+  Crafty.sprite(16, imgurl("BlueBubbleFont.png"), {
 
   });
-})();
+
+  return {imgurl:imgurl}
+}();
 
