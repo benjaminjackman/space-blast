@@ -39,7 +39,11 @@ Crafty.c("PeterGun", {
     framesPerShot: 2,
     speed: 10,
     shots: 10,
-    spread: Math.PI / 8
+    spread: Math.PI / 8,
+    damage: {
+      min : 1,
+      max : 10
+    }
   },
   init: function () {
 
@@ -52,11 +56,10 @@ Crafty.c("PeterGun", {
       Crafty.audio.play("laser", 1, 0.8);
       var self = this;
       _.range(this.stats.shots).forEach(function (i) {
-        console.log(i)
         var bullet = Crafty.e("Projectile1,PlayerBullet");
         var randomSpread = Crafty.math.randomNumber(-self.stats.spread / 2, self.stats.spread / 2);
         bullet.attr({
-          playerID: this[0],
+          weaponID: this[0],
           x: self.state.hardpoint.x,
           y: self.state.hardpoint.y,
           speed: self.stats.speed,

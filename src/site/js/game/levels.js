@@ -69,7 +69,9 @@ Crafty.scene("Level1",function(){
     //Display interface
     $('#interface').show();
     //Setup background of level
-    Crafty.background("url(" + game_path + "resources/images/bg.png)");
+//    Crafty.background("url(" + game_path + "resources/images/bg.png)");
+//    Crafty.background("url("+ImageR.imgurl("star-space-tile.jpg")+")");
+    Crafty.background("url("+ImageR.imgurl("stars-fill.jpg")+")");
 
     $('.level').text('Level: 1');
 
