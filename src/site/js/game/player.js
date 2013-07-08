@@ -17,17 +17,15 @@ Crafty.c("Player", {
   movementSpeed: 8,
   lives: 3,
   score: 0,
-  weapon: {
-    firerate: 5,
-    name: "Weapon1",
-    overheated: false
-  },
+  weapon: null,
   powerups: {},
   ship: "ship1",
   bars: {},
   infos: {},
   bounce: false,
   init: function () {
+    this.weapon = Crafty.e("PeterGun");
+    this.weapon.state.hardpoint = this;
 
     var stage = $('#cr-stage');
     var keyDown = false; //Player didnt pressed a key
@@ -63,24 +61,8 @@ Crafty.c("Player", {
         keyDown = false;
       })
       .bind("EnterFrame", function (frame) {
-        if (frame.frame % this.weapon.firerate == 0) {
-
-          if (keyDown && !this.weapon.overheated) {
-            this.shoot();
-          } else {
-            if (this.heat.current > 0) //Cooldown the weapon
-              this.heat.current = ~~(this.heat.current * 29 / 30);
-          }
-
-          Crafty.trigger("UpdateStats");
-
-          if (this.weapon.overheated && this.heat.percent < 85) {
-            this.weapon.overheated = false;
-            Crafty.trigger("HideText");
-          }
-
-        }
-
+        if (keyDown) this.weapon.shoot();
+        Crafty.trigger("UpdateStats");
       })
       .bind("Killed", function (points) {
         this.score += points;
@@ -154,29 +136,6 @@ Crafty.c("Player", {
     this.y = Crafty.viewport.height - this.h - 36;
 
     this.flicker = true;
-//        this.preparing = true;
-  },
-  shoot: function () {
-//        if(this.preparing) return;
-
-    var bullet = Crafty.e(this.weapon.name, "PlayerBullet");
-    bullet.attr({
-      playerID: this[0],
-      x: this._x + this._w / 2 - bullet.w / 2,
-      y: this._y - this._h / 2 + bullet.h / 2,
-      rotation: this._rotation,
-      xspeed: 20 * Math.sin(this._rotation / (180 / Math.PI)),
-      yspeed: 20 * Math.cos(this._rotation / (180 / Math.PI))
-    });
-
-    if (this.heat.current < this.heat.max)
-      this.heat.current++;
-
-    if (this.heat.current >= this.heat.max) {
-      Crafty.trigger("ShowText", "Weapon Overheated!");
-      this.weapon.overheated = true;
-    }
-
   },
   die: function () {
     Crafty.e("RandomExplosion").attr({

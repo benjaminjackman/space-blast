@@ -153,32 +153,37 @@ module.exports = function (grunt) {
       //Build on ts file changes
       ts: {
         files: tsSrc,
-        tasks: ['typescript']
+        tasks: ['typescript', 'templates']
       },
       //Build on coffee file changes
       coffee: {
         files: 'src/site/coffee/**/*.coffee',
-        tasks: ['coffee']
+        tasks: ['coffee', 'templates']
       },
       //Build on js file changes
       js: {
         files: 'src/site/js/**/*.js',
-        tasks: ['copyto:js']
+        tasks: ['copyto:js', 'templates']
       },
       //Build on js file changes
       css: {
         files: 'src/site/css/**/*.css',
-        tasks: ['copyto:css']
+        tasks: ['copyto:css', 'templates']
       },
       //Build on js file changes
       less: {
         files: 'src/site/less/**/*.less',
-        tasks: ['less']
+        tasks: ['less', 'templates']
       },
       //Build on changes to html template files
       templates: {
         files: [htmlSrc],
         tasks: ['templates']
+      },
+      //Copy resources over on changes
+      resources: {
+        files: 'src/site/resources/**/*',
+        tasks: ['copyto:resources']
       }
     }
 
@@ -237,7 +242,7 @@ module.exports = function (grunt) {
   //Moves all files into the site folder
   grunt.registerTask('move-to-site', ['copyto:bootstrapImg', 'concat', 'copyto:resources', 'copyto:js', 'copyto:css']);
   //Compiles needed files to the site folder
-  grunt.registerTask('compile', ['clean:site', 'move-to-site', 'coffee', 'typescript', 'templates', 'less']);
+  grunt.registerTask('compile', ['clean:site', 'move-to-site', 'coffee', 'typescript', 'less', 'templates']);
   //loops and recompiles / tests on every source file change.
   grunt.registerTask('loop', ['compile', 'express', 'watch']);
 

@@ -92,7 +92,6 @@ Crafty.c("MouseFace", {
     }
   },
   init: function () {
-    console.log("MouseFace Init");
 
     this.requires("Mouse");
 
