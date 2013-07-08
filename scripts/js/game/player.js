@@ -16,7 +16,7 @@ Crafty.c("Player", {
     max: 100,
     percent: 0
   },
-  movementSpeed: 8,
+  movementSpeed:5,
   lives: 3,
   score: 0,
   weapon: null,
@@ -39,28 +39,17 @@ Crafty.c("Player", {
         D: 0,
         A: 180
       })
-      .bind('Moved', function (from) { /*Bind a function which is triggered if player is moved*/
-//        /*Dont allow to move the player out of Screen*/
-//        if (this.x + this.w > Crafty.viewport.width ||
-//          this.x + this.w < this.w ||
-//          this.y + this.h - 35 < this.h ||
-//          this.y + this.h + 35 > Crafty.viewport.height) {
-//          this.attr({
-//            x: from.x,
-//            y: from.y
-//          });
-//        }
+      .bind('Moved', function (from) {
         var delta = {
           x : this.x - from.x,
           y : this.y - from.y
-        }
+        };
 
-        BACKGROUND_POS.x += -delta.x
-        BACKGROUND_POS.y += -delta.y
+        BACKGROUND_POS.x += -delta.x * .1
+        BACKGROUND_POS.y += -delta.y * .1
 
         Crafty.stage.elem.style.backgroundPosition =  BACKGROUND_POS.x + "px " + BACKGROUND_POS.y + "px";
 //
-        console.log(this.x, this.y)
       })
       .bind("KeyDown", function (e) {
         if (e.keyCode === Crafty.keys.SPACE) {

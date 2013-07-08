@@ -31,7 +31,7 @@ Crafty.c("PeterGun", {
     hardpoint: null
   },
   stats: {
-    framesPerShot: 2,
+    framesPerShot: 10,
     speed: 10,
     shots: 10,
     spread: Math.PI / 8,
@@ -53,12 +53,15 @@ Crafty.c("PeterGun", {
       _.range(this.stats.shots).forEach(function (i) {
         var bullet = Crafty.e("Projectile1,PlayerBullet");
         var randomSpread = Crafty.math.randomNumber(-self.stats.spread / 2, self.stats.spread / 2);
+        var angle = -self.state.hardpoint.getAngle() + randomSpread
+        var rotation = -(angle * (360 / (2 * Math.PI) ) + 270)
         bullet.attr({
           weaponID: this[0],
           x: self.state.hardpoint.x,
           y: self.state.hardpoint.y,
           speed: self.stats.speed,
-          angle: -self.state.hardpoint.getAngle() + randomSpread
+          rotation: rotation,
+          angle: angle
         });
       });
     }
