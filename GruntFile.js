@@ -77,14 +77,6 @@ module.exports = function (grunt) {
     },
 
     concat: {
-      libjs: {
-        src: [
-          'lib/jquery/jquery.js',
-          'lib/angular/angular.js',
-          'lib/*/*.js'
-        ],
-        dest: 'target/site/scripts/lib/Lib.js'
-      },
       libcss: {
         src: ['lib/*/*.css'],
         dest: 'target/site/styles/lib/Lib.css'
@@ -95,6 +87,10 @@ module.exports = function (grunt) {
       resources: {
         files: [
           {cwd: 'src/site/resources/', src: '**/*', dest: 'target/site/resources/'}
+        ]},
+      jslib: {
+        files: [
+          {cwd: 'lib/', src: '**/*.js', dest: 'target/site/scripts/lib/'}
         ]},
       js: {
         files: [
@@ -193,13 +189,20 @@ module.exports = function (grunt) {
     //Get the name of all the html files.
 //    var templs = grunt.file.expandMapping(htmlSrc, htmlOut, {cwd:'src/site/html'})
     var templs = grunt.file.expand({cwd: 'src/site/html'}, '**/*.html');
-    var scriptsTmpl = grunt.file.expand(
+    var scripts = _.uniq(grunt.file.expand(
       {cwd: "target/site"},
-      ['scripts/lib/**/*.js', 'scripts/js/**/*.js', 'scripts/coffee/**/*.js', 'scripts/ts/**/*.js']).map(
+      [ 'scripts/lib/jquery/jquery.js',
+        'scripts/lib/angular/angular.js',
+        'scripts/lib/**/*.js',
+        'scripts/js/**/*.js',
+        'scripts/coffee/**/*.js',
+        'scripts/ts/**/*.js']));
+    var scriptsTmpl = scripts.map(
       function (f) {
         return '<script src="' + f + '"></script>';
       }
     ).join("\n");
+
 
     var stylesTmpl = grunt.file.expand({cwd: "target/site"}, ['styles/lib/**/*.css', 'styles/css/**/*.css', 'styles/less/**/*.css']).map(
       function (f) {
@@ -240,15 +243,13 @@ module.exports = function (grunt) {
   //Downloads all depenedencies
   grunt.registerTask('download', ['bower-update', 'tsd-update']);
   //Moves all files into the site folder
-  grunt.registerTask('move-to-site', ['copyto:bootstrapImg', 'concat', 'copyto:resources', 'copyto:js', 'copyto:css']);
+  grunt.registerTask('move-to-site', ['copyto:bootstrapImg', 'concat', 'copyto:resources', 'copyto:jslib', 'copyto:js', 'copyto:css']);
   //Compiles needed files to the site folder
   grunt.registerTask('compile', ['clean:site', 'move-to-site', 'coffee', 'typescript', 'less', 'templates']);
   //loops and recompiles / tests on every source file change.
   grunt.registerTask('loop', ['compile', 'express', 'watch']);
 
   grunt.registerTask('default', ['compile']);
-
-
 
 
 };
