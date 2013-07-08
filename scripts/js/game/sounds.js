@@ -1,10 +1,15 @@
 
 Crafty.audio.add({
+    explode: [
+     game_path + "resources/sounds/explode.wav"
+    ],
     explosion0: [
-    game_path + "resources/sounds/explode.wav"
+    game_path + "resources/sounds/explode.mp3",
+    game_path + "resources/sounds/explode.ogg"
     ],
     explosion1: [
-    game_path + "resources/sounds/explode.wav"
+    game_path + "resources/sounds/explodemini.mp3",
+    game_path + "resources/sounds/explodemini.ogg"
     ],
     laser: [
     game_path + "resources/sounds/laser.wav"

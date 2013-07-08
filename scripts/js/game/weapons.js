@@ -4,7 +4,7 @@ Crafty.c("Bullet", {
     this.dob = Crafty.frame();
     this.addComponent("2D", "Canvas", "Collision")
       .bind("EnterFrame", function (frame) {
-        if (frame.frame > this.dob + 60) this.destroy()
+        if (frame.frame > this.dob + 100) this.destroy()
       })
   }
 });
@@ -33,8 +33,8 @@ Crafty.c("PeterGun", {
   stats: {
     framesPerShot: 10,
     speed: 10,
-    shots: 10,
-    spread: Math.PI / 8,
+    shots: 1,
+    spread: 5,
     damage: {
       min : 1,
       max : 10
@@ -48,12 +48,12 @@ Crafty.c("PeterGun", {
     var nextFrame = this.state.lastFrame + this.stats.framesPerShot;
     if (f > nextFrame) {
       this.state.lastFrame = f;
-      Crafty.audio.play("laser", 1, 0.8);
+      Crafty.audio.play("laser1", 1, 0.8);
       var self = this;
       _.range(this.stats.shots).forEach(function (i) {
         var bullet = Crafty.e("Projectile1,PlayerBullet");
         var randomSpread = Crafty.math.randomNumber(-self.stats.spread / 2, self.stats.spread / 2);
-        var angle = -self.state.hardpoint.getAngle() + randomSpread
+        var angle = -self.state.hardpoint.getAngle() + randomSpread * Math.PI / 180
         var rotation = -(angle * (360 / (2 * Math.PI) ) + 270)
         bullet.attr({
           weaponID: this[0],

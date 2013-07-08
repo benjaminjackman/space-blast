@@ -29,6 +29,7 @@ Crafty.c("Enemy",{
         //Event triggered when enemy was hurt
         .bind("Hurt",function(dmg){
             //Create a damage effect
+            Crafty.audio.play("explode", 1, 0.8);
             Crafty.e("Damage").attr({
                 x:this.x,
                 y:this.y

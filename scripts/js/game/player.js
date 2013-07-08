@@ -45,8 +45,8 @@ Crafty.c("Player", {
           y : this.y - from.y
         };
 
-        BACKGROUND_POS.x += -delta.x * .1
-        BACKGROUND_POS.y += -delta.y * .1
+        BACKGROUND_POS.x += -delta.x
+        BACKGROUND_POS.y += -delta.y
 
         Crafty.stage.elem.style.backgroundPosition =  BACKGROUND_POS.x + "px " + BACKGROUND_POS.y + "px";
 //
@@ -57,10 +57,16 @@ Crafty.c("Player", {
         }
       })
       .bind("MouseDown", function (e) {
-        keyDown = true;
+        if (e.mouseButton == Crafty.mouseButtons.LEFT) {
+          keyDown = true;
+        }
+
+
       })
       .bind("MouseUp", function (e) {
-        keyDown = false;
+        if (e.mouseButton == Crafty.mouseButtons.LEFT) {
+          keyDown = false;
+        }
       })
       .bind("EnterFrame", function (frame) {
         if (keyDown) this.weapon.shoot();
