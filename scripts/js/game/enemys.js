@@ -10,12 +10,6 @@ Crafty.c("Enemy",{
         this.requires("2D,Canvas,Collision")  
         //Destroy all enemies if they leave the viewport
         .bind("EnterFrame",function(){
-            if(this.x > Crafty.viewport.width + this.w ||
-                this.x < -this.w || 
-                this.y < -this.h || 
-                this.y > Crafty.viewport.height +this.h){
-                this.destroy();
-            }
         })
         //Describe behavior on getting hitted by Player Bullet
         .onHit("PlayerBullet",function(ent){
@@ -54,13 +48,13 @@ Crafty.c("Enemy",{
             Crafty(this.playerID).trigger("Killed",this.points);
             //Destroy the asteroid
             this.destroy();
-            if(Crafty.math.randomInt(0, 100) > 70){
-                var powerUp = powerUps[Crafty.math.randomInt(0, powerUps.length-1)];
-                Crafty.e(powerUp).attr({
-                    x:this.x,
-                    y:this.y
-                });
-            }
+//            if(Crafty.math.randomInt(0, 100) > 70){
+//                var powerUp = powerUps[Crafty.math.randomInt(0, powerUps.length-1)];
+//                Crafty.e(powerUp).attr({
+//                    x:this.x,
+//                    y:this.y
+//                });
+//            }
         });
     }
 });

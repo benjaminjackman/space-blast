@@ -1,15 +1,10 @@
 Crafty.c("Bullet", {
-  dmg: 0,
-  firerate: 0,
+
   init: function () {
+    this.dob = Crafty.frame();
     this.addComponent("2D", "Canvas", "Collision")
-      .bind("EnterFrame", function () {
-        if (this.x > Crafty.viewport.width + this.w ||
-          this.x < -this.w ||
-          this.y < -this.h ||
-          this.y > Crafty.viewport.height + this.h) {
-          this.destroy();
-        }
+      .bind("EnterFrame", function (frame) {
+        if (frame.frame > this.dob + 60) this.destroy()
       })
   }
 });

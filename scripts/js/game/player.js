@@ -1,3 +1,5 @@
+BACKGROUND_POS = {  x : 0,  y: 0}
+
 Crafty.c("Player", {
   hp: {
     current: 10,
@@ -26,6 +28,7 @@ Crafty.c("Player", {
   init: function () {
     this.weapon = Crafty.e("PeterGun");
     this.weapon.state.hardpoint = this;
+    var self = this
 
     var stage = $('#cr-stage');
     var keyDown = false; //Player didnt pressed a key
@@ -37,17 +40,27 @@ Crafty.c("Player", {
         A: 180
       })
       .bind('Moved', function (from) { /*Bind a function which is triggered if player is moved*/
-        /*Dont allow to move the player out of Screen*/
-        if (this.x + this.w > Crafty.viewport.width ||
-          this.x + this.w < this.w ||
-          this.y + this.h - 35 < this.h ||
-          this.y + this.h + 35 > Crafty.viewport.height) {
-          this.attr({
-            x: from.x,
-            y: from.y
-          });
+//        /*Dont allow to move the player out of Screen*/
+//        if (this.x + this.w > Crafty.viewport.width ||
+//          this.x + this.w < this.w ||
+//          this.y + this.h - 35 < this.h ||
+//          this.y + this.h + 35 > Crafty.viewport.height) {
+//          this.attr({
+//            x: from.x,
+//            y: from.y
+//          });
+//        }
+        var delta = {
+          x : this.x - from.x,
+          y : this.y - from.y
         }
 
+        BACKGROUND_POS.x += -delta.x
+        BACKGROUND_POS.y += -delta.y
+
+        Crafty.stage.elem.style.backgroundPosition =  BACKGROUND_POS.x + "px " + BACKGROUND_POS.y + "px";
+//
+        console.log(this.x, this.y)
       })
       .bind("KeyDown", function (e) {
         if (e.keyCode === Crafty.keys.SPACE) {
@@ -69,7 +82,6 @@ Crafty.c("Player", {
         Crafty.trigger("UpdateStats");
       })
       .bind("Hurt", function (dmg) {
-        if (this.flicker) return;
         if (this.bounce == false) {
           this.bounce = true;
           var t = this;
@@ -132,10 +144,8 @@ Crafty.c("Player", {
     }
     Crafty.trigger("UpdateStats");
     //Init position
-    this.x = Crafty.viewport.width / 2 - this.w / 2;
-    this.y = Crafty.viewport.height - this.h - 36;
-
-    this.flicker = true;
+    this.x = 100;
+    this.y = 1000;
   },
   die: function () {
     Crafty.e("RandomExplosion").attr({
