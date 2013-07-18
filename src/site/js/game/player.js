@@ -1,4 +1,4 @@
-BACKGROUND_POS = {  x: 0, y: 0}
+BACKGROUN D_POS = {  x: 0, y: 0};
 
 Crafty.c("Player", {
   hp: {
@@ -78,14 +78,13 @@ Crafty.c("Player", {
       .bind('Moved', function (from) {
         this.hardpoint.calcPosition();
 
-
         var delta = {
           x: this.x - from.x,
           y: this.y - from.y
         };
 
-        BACKGROUND_POS.x += -delta.x * .5
-        BACKGROUND_POS.y += -delta.y * .5
+        BACKGROUND_POS.x += -delta.x * .5;
+        BACKGROUND_POS.y += -delta.y * .5;
 
 
         Crafty.stage.elem.style.backgroundPosition = BACKGROUND_POS.x + "px " + BACKGROUND_POS.y + "px";
@@ -131,11 +130,6 @@ Crafty.c("Player", {
         if (this.bounce == false) {
           this.bounce = true;
           var t = this;
-//                stage.effect('highlight',{
-//                    color:'#990000'
-//                },100,function(){
-//                    t.bounce = false;
-//                });
         }
         Crafty.e("Damage").attr({
           x: this.x,
@@ -187,7 +181,7 @@ Crafty.c("Player", {
       current: 0,
       max: 100,
       percent: 0
-    }
+    };
     Crafty.trigger("UpdateStats");
   },
   die: function () {

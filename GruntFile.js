@@ -108,6 +108,7 @@ module.exports = function (grunt) {
       {cwd: "target/site"},
       [ 'scripts/lib/jquery/jquery.js',
         'scripts/lib/angular/angular.js',
+        'scripts/js/crafty/crafty.js',
         'scripts/lib/**/*.js',
         'scripts/js/**/*.js',
         'scripts/coffee/**/*.js',
