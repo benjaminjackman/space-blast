@@ -5146,14 +5146,15 @@ Crafty.extend({
         _clamp: function () {
             // clamps the viewport to the viewable area
             // under no circumstances should the viewport see something outside the boundary of the 'world'
-            if (!this.clampToEntities) return;
+            //if (!this.clampToEntities) return;
             var bound = this.bounds || Crafty.map.boundaries();
+
 			bound.max.x *= this._zoom;
 			bound.min.x *= this._zoom;
 			bound.max.y *= this._zoom;
 			bound.min.y *= this._zoom;
             if (bound.max.x - bound.min.x > Crafty.viewport.width) {
-                bound.max.x -= Crafty.viewport.width;
+                //bound.max.x -= Crafty.viewport.width;
 
                 if (Crafty.viewport.x < -bound.max.x) {
                     Crafty.viewport.x = -bound.max.x;
@@ -5166,7 +5167,7 @@ Crafty.extend({
                 Crafty.viewport.x = -1 * (bound.min.x + (bound.max.x - bound.min.x) / 2 - Crafty.viewport.width / 2);
             }
             if (bound.max.y - bound.min.y > Crafty.viewport.height) {
-                bound.max.y -= Crafty.viewport.height;
+                //bound.max.y -= Crafty.viewport.height;
 
                 if (Crafty.viewport.y < -bound.max.y) {
                     Crafty.viewport.y = -bound.max.y;

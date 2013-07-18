@@ -10,8 +10,7 @@
     "angular-ui": "0.4.0",
     "angular-grid": "angular-ui/ng-grid#2.0.6",
     "moment": "timrwood/moment#2.0.0",
-    "bootstrap":"twitter/bootstrap#2.3.1",
-    "definitely-typed":"borisyankov/DefinitelyTyped"
+    "bootstrap":"twitter/bootstrap#2.3.1"
   },
   "ignore": [
   ],
@@ -42,16 +41,6 @@
         "docs/assets/css/bootstrap.css",
         "docs/assets/img/glyphicons-halflings.png",
         "docs/assets/img/glyphicons-halflings-white.png"
-      ]
-    },
-    "definitely-typed": {
-      "" : [
-          "angularjs/angular.d.ts",
-          "d3/d3.d.ts",
-          "jquery/jquery.d.ts",
-          "moment/moment.d.ts",
-          "bootstrap/bootstrap.d.ts",
-          "underscore/underscore.d.ts"
       ]
     }
   }

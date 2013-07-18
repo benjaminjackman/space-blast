@@ -1,4 +1,4 @@
-BACKGROUND_POS = {  x : 0,  y: 0}
+BACKGROUND_POS = {  x: 0, y: 0}
 
 Crafty.c("Player", {
   hp: {
@@ -16,7 +16,9 @@ Crafty.c("Player", {
     max: 100,
     percent: 0
   },
-  movementSpeed: 8,
+  movementSpeed: 5,
+  gpadX: 0,
+  gpadY: 0,
   lives: 3,
   score: 0,
   weapon: null,
@@ -26,41 +28,68 @@ Crafty.c("Player", {
   infos: {},
   bounce: false,
   init: function () {
+    this.requires("2D,Canvas," + this.ship + ",Multiway,Gamepad, GamepadMultiway, Keyboard,Collision,MouseFace")
+
+    //Init position
+    this.x = 500;
+    this.y = 500;
+
+    this.origin("center");
+
+    this.hardpoint = Crafty.e("Hardpoint");
+    this.hardpoint.followParent(-18, -10, this);
+
+
     this.weapon = Crafty.e("PeterGun");
-    this.weapon.state.hardpoint = this;
-    var self = this
+    this.weapon.state.hardpoint = this.hardpoint;
+
 
     var stage = $('#cr-stage');
     var keyDown = false; //Player didnt pressed a key
-    this.requires("2D,Canvas," + this.ship + ",Multiway,Keyboard,Collision,MouseFace")/*Add needed Components*/
+
+    /*Add needed Components*/
+    this
       .multiway(this.movementSpeed, { /*Enable Movement Control*/
         W: -90,
         S: 90,
         D: 0,
         A: 180
       })
-      .bind('Moved', function (from) { /*Bind a function which is triggered if player is moved*/
-//        /*Dont allow to move the player out of Screen*/
-//        if (this.x + this.w > Crafty.viewport.width ||
-//          this.x + this.w < this.w ||
-//          this.y + this.h - 35 < this.h ||
-//          this.y + this.h + 35 > Crafty.viewport.height) {
-//          this.attr({
-//            x: from.x,
-//            y: from.y
-//          });
-//        }
-        var delta = {
-          x : this.x - from.x,
-          y : this.y - from.y
+      .gamepad(0)
+      .bind('GamepadChange', function (e) {
+        if (e.axis == 0) {
+          this.gpadX = e.value
+        }
+        if (e.axis == 1) {
+          this.gpadY = e.value
         }
 
-        BACKGROUND_POS.x += -delta.x
-        BACKGROUND_POS.y += -delta.y
+        if (e.button === 0 && e.value === 1) {
+          keyDown = true
+        }
 
-        Crafty.stage.elem.style.backgroundPosition =  BACKGROUND_POS.x + "px " + BACKGROUND_POS.y + "px";
+        if (e.button === 0 && e.value === 0) {
+          keyDown = false
+        }
+      })
+      .bind('Rotate', function () {
+        this.hardpoint.calcPosition();
+      })
+      .bind('Moved', function (from) {
+        this.hardpoint.calcPosition();
+
+
+        var delta = {
+          x: this.x - from.x,
+          y: this.y - from.y
+        };
+
+        BACKGROUND_POS.x += -delta.x * .5
+        BACKGROUND_POS.y += -delta.y * .5
+
+
+        Crafty.stage.elem.style.backgroundPosition = BACKGROUND_POS.x + "px " + BACKGROUND_POS.y + "px";
 //
-        console.log(this.x, this.y)
       })
       .bind("KeyDown", function (e) {
         if (e.keyCode === Crafty.keys.SPACE) {
@@ -68,12 +97,29 @@ Crafty.c("Player", {
         }
       })
       .bind("MouseDown", function (e) {
-        keyDown = true;
+        if (e.mouseButton == Crafty.mouseButtons.LEFT) {
+          keyDown = true;
+        }
       })
       .bind("MouseUp", function (e) {
-        keyDown = false;
+        if (e.mouseButton == Crafty.mouseButtons.LEFT) {
+          keyDown = false;
+        }
       })
       .bind("EnterFrame", function (frame) {
+
+        var theta = Math.atan2(this.gpadY, this.gpadX);
+        var oldX = this.x;
+        var oldY = this.y;
+        var mag = Math.max(Math.abs(this.gpadX), Math.abs(this.gpadY));
+        if (mag > 0) {
+          this.x += mag * this.movementSpeed * Math.cos(theta);
+          this.y += mag * this.movementSpeed * Math.sin(theta);
+          this.trigger('Moved', {x: oldX, y: oldY});
+          this.rotation = theta * 180 / Math.PI + 90
+        }
+
+
         if (keyDown) this.weapon.shoot();
         Crafty.trigger("UpdateStats");
       })
@@ -143,9 +189,6 @@ Crafty.c("Player", {
       percent: 0
     }
     Crafty.trigger("UpdateStats");
-    //Init position
-    this.x = 100;
-    this.y = 1000;
   },
   die: function () {
     Crafty.e("RandomExplosion").attr({

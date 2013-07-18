@@ -119,7 +119,7 @@ Crafty.scene("Level1", function () {
     //Trigger Event to display enemies
     spotEnemys(frame.frame);
     //Setup Background position
-    //Crafty.stage.elem.style.backgroundPosition =frame.frame +"px "+frame.frame+"px";
+    //Crafty.stage.elem.style.backgroundPosition ="0px "+frame.frame+"px";
 
   });
 
